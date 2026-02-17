@@ -3,9 +3,36 @@ const resetBtn = document.getElementById("resetBtn");
 const mainBalls = document.getElementById("mainBalls");
 const bonusBall = document.getElementById("bonusBall");
 const historyList = document.getElementById("historyList");
+const themeToggle = document.getElementById("theme-toggle");
 
 const MAX_HISTORY = 10;
 const history = [];
+
+// Theme handling
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme) {
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  if (currentTheme === 'dark') {
+    themeToggle.checked = true;
+  }
+} else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  themeToggle.checked = true;
+} else {
+  document.documentElement.setAttribute('data-theme', 'light');
+  themeToggle.checked = false;
+}
+
+
+themeToggle.addEventListener('change', (event) => {
+  if (event.target.checked) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('theme', 'light');
+  }
+});
 
 function getColorClass(number) {
   if (number <= 10) return "yellow";
